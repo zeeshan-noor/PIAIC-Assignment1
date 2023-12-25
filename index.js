@@ -1,223 +1,136 @@
 "use strict";
-// Question#1
-const getDayOfWeek = (dayNumber) => {
-    let dayName;
-    switch (dayNumber) {
-        case 1:
-            dayName = "Monday";
-            break;
-        case 2:
-            dayName = "Tuesday";
-            break;
-        case 3:
-            dayName = "Wednesday";
-            break;
-        case 4:
-            dayName = "Thursday";
-            break;
-        case 5:
-            dayName = "Friday";
-            break;
-        case 6:
-            dayName = "Weekend";
-            break;
-        default:
-            dayName = "Invalid day number";
-    }
-    return dayName;
+// User Create a function that takes an array, an index, and a value as parameters. Inside the function, use the splice method to insert the value at the specified index in the array. Return the modified array. in typescript
+const insertValueAtIndex = (arr, index, value) => {
+    arr.splice(index, 0, value);
+    return arr;
 };
-const dayNumber = 3;
-const result = getDayOfWeek(dayNumber);
-console.log(`For day number ${dayNumber}, the day of the week is: ${result}`);
+const originalArray = [1, 2, 3, 4, 5];
+const modifiedArray = insertValueAtIndex(originalArray, 2, 99);
+console.log(modifiedArray);
 console.log("/**********************************/\n");
-// Question#2
-const correctAccountNumber = 123456;
-const correctPIN = 1234;
-let accountBalance = 1000;
-function withdraw(accountNumber, pin, amount) {
-    if (accountNumber === correctAccountNumber) {
-        if (pin === correctPIN) {
-            if (amount <= accountBalance) {
-                accountBalance -= amount;
-                return `Withdrawal successful. Remaining balance: ${accountBalance}`;
-            }
-            else {
-                return "Insufficient balance";
-            }
-        }
-        else {
-            return "Incorrect PIN";
-        }
+//Implement a simple shopping cart program using an array. Create functions to add items, remove items, and update quantities using the splice method. Print the cart's contents after each operation in typescript
+const shoppingCart = [];
+const addItem = (item) => {
+    shoppingCart.push(item);
+    printCart();
+};
+const removeItem = (itemName) => {
+    const index = shoppingCart.findIndex((item) => item.name === itemName);
+    if (index !== -1) {
+        shoppingCart.splice(index, 1);
+        printCart();
     }
     else {
-        return "Incorrect account number";
+        console.log(`${itemName} not found in the cart.`);
     }
-}
-console.log(withdraw(123456, 1234, 500));
-console.log(withdraw(654321, 1234, 500));
-console.log(withdraw(123456, 4321, 500));
-console.log(withdraw(123456, 1234, 1500));
-console.log("/**********************************/\n");
-// Question#3
-function greetBasedOnTimeWithIfStatements(hours) {
-    let greeting;
-    if (hours >= 0 && hours < 12) {
-        greeting = "Good Morning (If-Statements)";
-    }
-    else if (hours >= 12 && hours < 18) {
-        greeting = "Good Afternoon (If-Statements)";
-    }
-    else if (hours >= 18 && hours <= 23) {
-        greeting = "Good Evening (If-Statements)";
+};
+const updateQuantity = (itemName, newQuantity) => {
+    const index = shoppingCart.findIndex((item) => item.name === itemName);
+    if (index !== -1) {
+        shoppingCart[index].quantity = newQuantity;
+        printCart();
     }
     else {
-        greeting = "Invalid time (If-Statements)";
+        console.log(`${itemName} not found in the cart.`);
     }
-    return greeting;
-}
-function greetBasedOnTimeWithSwitchStatements(hours) {
-    let greeting;
-    switch (true) {
-        case hours >= 0 && hours < 12:
-            greeting = "Good Morning (Switch-Statement)";
-            break;
-        case hours >= 12 && hours < 18:
-            greeting = "Good Afternoon (Switch-Statement)";
-            break;
-        case hours >= 18 && hours <= 23:
-            greeting = "Good Evening (Switch-Statement)";
-            break;
-        default:
-            greeting = "Invalid time (Switch-Statement)";
-    }
-    return greeting;
-}
-const currentHour = new Date().getHours();
-console.log(`The greet Based On Time With If-statements is: ${greetBasedOnTimeWithIfStatements(currentHour)}`);
-console.log(`The greet Based On Time With Switch-Statements is: ${greetBasedOnTimeWithSwitchStatements(currentHour)}`);
+};
+const printCart = () => {
+    console.log("Cart Contents:");
+    shoppingCart.map((item) => {
+        console.log(`${item.name} - Quantity: ${item.quantity} - Price: $${item.price}`);
+    });
+    console.log("----------");
+};
+addItem({ name: "ProductA", price: 10, quantity: 2 });
+addItem({ name: "ProductB", price: 20, quantity: 1 });
+removeItem("ProductA");
+updateQuantity("ProductB", 3);
 console.log("/**********************************/\n");
-//Question#4
-function getStudyLevelWithIfStatements(classNumber) {
-    let studyLevel;
-    // Using if-else if statements
-    if (classNumber >= 1 && classNumber <= 5) {
-        studyLevel = "Playgroup to Kindergarten (If-Statements)";
-    }
-    else if (classNumber >= 6 && classNumber <= 8) {
-        studyLevel = "Middle School (If-Statements)";
-    }
-    else if (classNumber >= 9 && classNumber <= 10) {
-        studyLevel = "Matriculation (If-Statements)";
-    }
-    else if (classNumber >= 11 && classNumber <= 12) {
-        studyLevel = "Intermediate (If-Statements)";
-    }
-    else if (classNumber >= 13 && classNumber <= 16) {
-        studyLevel = "Undergraduate to Master's (If-Statements)";
-    }
-    else if (classNumber >= 17 && classNumber <= 20) {
-        studyLevel = "PhD (If-Statements)";
-    }
-    else {
-        studyLevel = "Unknown (If-Statements)";
-    }
-    return studyLevel;
+//Write a program that uses a while loop to print the first 25 integers.
+let count = 1;
+while (count <= 25) {
+    console.log(count);
+    count++;
 }
-function getStudyLevelWithSwitchStatements(classNumber) {
-    let studyLevel;
-    // Using switch statement
-    switch (classNumber) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            studyLevel = "Playgroup to Kindergarten (Switch-Statement)";
-            break;
-        case 6:
-        case 7:
-        case 8:
-            studyLevel = "Middle School (Switch-Statement)";
-            break;
-        case 9:
-        case 10:
-            studyLevel = "Matriculation (Switch-Statement)";
-            break;
-        case 11:
-        case 12:
-            studyLevel = "Intermediate (Switch-Statement)";
-            break;
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-            studyLevel = "Undergraduate to Master's (Switch-Statement)";
-            break;
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-            studyLevel = "PhD (Switch-Statement)";
-            break;
-        default:
-            studyLevel = "Unknown (Switch-Statement)";
-    }
-    return studyLevel;
-}
-const classNumber = 12;
-console.log(`For class ${classNumber}, the study level is: ${getStudyLevelWithIfStatements(classNumber)}`);
-console.log(`For class ${classNumber}, the study level is: ${getStudyLevelWithSwitchStatements(classNumber)}`);
 console.log("/**********************************/\n");
-//Question#5
-function checkNumberStatus(number) {
-    if (number > 0) {
-        return "Positive";
+// Write a program that uses a while loop to print the first 10 even numbers.
+let count1 = 1;
+let evenCount = 0;
+while (evenCount < 10) {
+    if (count1 % 2 === 0) {
+        console.log(count1);
+        evenCount++;
     }
-    else if (number === 0) {
-        return "Zero";
-    }
-    else {
-        return "Negative";
-    }
+    count1++;
 }
-const testNumber = 42;
-console.log(`The number ${testNumber} is: ${checkNumberStatus(testNumber)}`);
 console.log("/**********************************/\n");
-//Question#5
-function findGreatestAndSmallest(a, b, c, d, e) {
-    // Find the greatest number
-    let greatest = a;
-    if (b > greatest) {
-        greatest = b;
+//Create a function that takes a positive integer as parameter and uses a while loop to calculate and return the factorial of that number.
+const calculateFactorial = (num) => {
+    if (num < 0) {
+        throw new Error("Please provide a positive integer.");
     }
-    if (c > greatest) {
-        greatest = c;
+    let factorial = 1;
+    let currentNumber = 1;
+    while (currentNumber <= num) {
+        factorial *= currentNumber;
+        currentNumber++;
     }
-    if (d > greatest) {
-        greatest = d;
+    return factorial;
+};
+const result = calculateFactorial(5);
+console.log(`Factorial: ${result}`);
+console.log("/**********************************/\n");
+// Write a program having an array of numbers if the number is negative it should remove the negative number from the array.
+const removeNegativeNumbers = (numbers) => {
+    const nonNegativeNumbers = numbers.filter((number) => number >= 0);
+    return nonNegativeNumbers;
+};
+const originalArray1 = [1, -2, 3, -4, 5, -6];
+const newArray1 = removeNegativeNumbers(originalArray1);
+console.log("Original Array:", originalArray1);
+console.log("Array without Negative Numbers:", newArray1);
+console.log("/**********************************/\n");
+//Create a function that takes an array of numbers as parameter. Use a while loop to calculate and return the sum of all the numbers in the array.
+function calculateSum(numbers) {
+    let sum = 0;
+    let index = 0;
+    while (index < numbers.length) {
+        sum += numbers[index];
+        index++;
     }
-    if (e > greatest) {
-        greatest = e;
-    }
-    // Find the smallest number
-    let smallest = a;
-    if (b < smallest) {
-        smallest = b;
-    }
-    if (c < smallest) {
-        smallest = c;
-    }
-    if (d < smallest) {
-        smallest = d;
-    }
-    if (e < smallest) {
-        smallest = e;
-    }
-    return { greatest, smallest };
+    return sum;
 }
-// Example usage
-const num1 = 15, num2 = 7, num3 = 22, num4 = 10, num5 = 35; // Change these numbers as needed
-const { greatest, smallest } = findGreatestAndSmallest(num1, num2, num3, num4, num5);
-console.log(`The greatest number is: ${greatest}`);
-console.log(`The smallest number is: ${smallest}`);
+const numbersArray = [1, 2, 3, 4, 5];
+const resultSum = calculateSum(numbersArray);
+console.log("Array:", numbersArray);
+console.log("Sum of Numbers:", resultSum);
+console.log("/**********************************/\n");
+//Implement a program that takes a list of temperatures in Celsius as input from the user. Convert each temperature to Fahrenheit using the formula F = (C * 9/5) + 32 and store the converted temperatures in an array. Use a while loop to perform the conversion for each temperature.
+const celsiusToFahrenheit = (celsius) => {
+    return (celsius * 9) / 5 + 32;
+};
+const convertTemperatures = (celsiusTemperatures) => {
+    const fahrenheitTemperatures = [];
+    let i = 0;
+    while (i < celsiusTemperatures.length) {
+        const fahrenheit = celsiusToFahrenheit(celsiusTemperatures[i]);
+        fahrenheitTemperatures.push(fahrenheit);
+        i++;
+    }
+    return fahrenheitTemperatures;
+};
+const inputTemperatures = [20, 25, 30, 35];
+const convertedTemperatures = convertTemperatures(inputTemperatures);
+console.log("Celsius Temperatures:", inputTemperatures);
+console.log("Converted Temperatures in Fahrenheit:", convertedTemperatures);
+console.log("/**********************************/\n");
+// Write a program to remove all the odd numbers from an array.
+const removeOddNumbers = (numbers) => {
+    const evenNumbers = numbers.filter((number) => number % 2 === 0);
+    return evenNumbers;
+};
+const originalArray2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const newArray2 = removeOddNumbers(originalArray2);
+console.log("Original Array:", originalArray2);
+console.log("Array without Odd Numbers:", newArray2);
 console.log("/**********************************/\n");
