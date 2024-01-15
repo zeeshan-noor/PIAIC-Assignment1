@@ -40,33 +40,32 @@ const chalk_1 = __importDefault(require("chalk"));
 // Function to perform arithmetic operations
 const performOperation = (num1, num2, operator) => {
     switch (operator) {
-        case '+':
+        case "+":
             return num1 + num2;
-        case '-':
+        case "-":
             return num1 - num2;
-        case '*':
+        case "*":
             return num1 * num2;
-        case '/':
+        case "/":
             return num1 / num2;
         default:
-            throw new Error('Invalid operator');
+            throw new Error("Invalid operator");
     }
 };
 // Function to display result with colored output
 const displayResult = (result, operator) => {
-    let color = chalk_1.default.white;
-    // Set color based on the operator
+    let color = chalk_1.default.greenBright;
     switch (operator) {
-        case '+':
+        case "+":
             color = chalk_1.default.green;
             break;
-        case '-':
+        case "-":
             color = chalk_1.default.red;
             break;
-        case '*':
+        case "*":
             color = chalk_1.default.yellow;
             break;
-        case '/':
+        case "/":
             color = chalk_1.default.blue;
             break;
     }
@@ -76,31 +75,38 @@ const displayResult = (result, operator) => {
 const calculator = () => __awaiter(void 0, void 0, void 0, function* () {
     const questions = [
         {
-            type: 'input',
-            name: 'num1',
-            message: 'Enter the first number:',
-            validate: (value) => !isNaN(Number(value)) || 'Please enter a valid number',
+            type: "input",
+            name: "num1",
+            message: "Enter the first number:",
+            validate: (value) => !isNaN(Number(value)) || "Please enter a valid number",
         },
         {
-            type: 'input',
-            name: 'num2',
-            message: 'Enter the second number:',
-            validate: (value) => !isNaN(Number(value)) || 'Please enter a valid number',
+            type: "input",
+            name: "num2",
+            message: "Enter the second number:",
+            validate: (value) => !isNaN(Number(value)) || "Please enter a valid number",
         },
         {
-            type: 'list',
-            name: 'operator',
-            message: 'Select an operation:',
-            choices: ['+', '-', '*', '/'],
+            type: "list",
+            name: "operator",
+            message: "Select an operation:",
+            choices: ["+", "-", "*", "/"],
+            // loop: true,
         },
     ];
     try {
-        const { num1, num2, operator } = yield inquirer.prompt(questions);
-        const result = performOperation(parseFloat(num1), parseFloat(num2), operator);
-        displayResult(result, operator);
+        inquirer
+            .prompt(questions)
+            .then((answers) => {
+            const { num1, num2, operator } = answers;
+            // console.log("answer", answers);
+            const result = performOperation(parseFloat(num1), parseFloat(num2), operator);
+            displayResult(result, operator);
+        })
+            .catch((err) => console.error(chalk_1.default.yellowBright("Error:", err.message)));
     }
     catch (error) {
-        console.error(chalk_1.default.red('Error:', error.message));
+        console.error(chalk_1.default.red("Error:", error.message));
     }
 });
 // Run the calculator
