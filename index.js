@@ -35,73 +35,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const inquirer = __importStar(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-// Function to perform arithmetic operations
-const performOperation = (num1, num2, operator) => {
-    switch (operator) {
-        case '+':
-            return num1 + num2;
-        case '-':
-            return num1 - num2;
-        case '*':
-            return num1 * num2;
-        case '/':
-            return num1 / num2;
-        default:
-            throw new Error('Invalid operator');
-    }
+const inquirer = __importStar(require("inquirer"));
+const exchangeRates = {
+    USD: 1,
+    EUR: 0.85,
+    PKR: 280, // Pakistan Rupee
 };
-// Function to display result with colored output
-const displayResult = (result, operator) => {
-    let color = chalk_1.default.white;
-    // Set color based on the operator
-    switch (operator) {
-        case '+':
-            color = chalk_1.default.green;
-            break;
-        case '-':
-            color = chalk_1.default.red;
-            break;
-        case '*':
-            color = chalk_1.default.yellow;
-            break;
-        case '/':
-            color = chalk_1.default.blue;
-            break;
-    }
-    console.log(color(`Result: ${result}`));
-};
-// Main calculator function
-const calculator = () => __awaiter(void 0, void 0, void 0, function* () {
+const promptCurrencyValue = () => __awaiter(void 0, void 0, void 0, function* () {
     const questions = [
         {
-            type: 'input',
-            name: 'num1',
-            message: 'Enter the first number:',
-            validate: (value) => !isNaN(Number(value)) || 'Please enter a valid number',
+            type: "input",
+            name: "amount",
+            message: "Enter the amount to convert:",
+            validate: (value) => {
+                const isValidNumber = !isNaN(parseFloat(value));
+                return isValidNumber || "Please enter a valid number";
+            },
         },
         {
-            type: 'input',
-            name: 'num2',
-            message: 'Enter the second number:',
-            validate: (value) => !isNaN(Number(value)) || 'Please enter a valid number',
+            type: "input",
+            name: "fromCurrency",
+            message: "Enter the source currency code(e.g., USD):",
         },
         {
-            type: 'list',
-            name: 'operator',
-            message: 'Select an operation:',
-            choices: ['+', '-', '*', '/'],
+            type: "input",
+            name: "toCurrency",
+            message: "Enter the target currency code(e.g., PKR):",
         },
     ];
+    const answers = yield inquirer.prompt(questions);
     try {
-        const { num1, num2, operator } = yield inquirer.prompt(questions);
-        const result = performOperation(parseFloat(num1), parseFloat(num2), operator);
-        displayResult(result, operator);
+        const amount = parseFloat(answers.amount);
+        const convertedAmount = convert(amount, answers.fromCurrency.toUpperCase(), answers.toCurrency.toUpperCase());
+        console.log(convertedAmount);
     }
     catch (error) {
-        console.error(chalk_1.default.red('Error:', error.message));
+        console.error(error.message);
     }
 });
-// Run the calculator
-calculator();
+function convert(amount, fromCurrency, toCurrency) {
+    if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+        throw new Error("Invalid currency code");
+    }
+    const rate = exchangeRates[toCurrency] / exchangeRates[fromCurrency];
+    return `${chalk_1.default.yellow(amount + " " + fromCurrency)} is ${chalk_1.default.red((amount * rate).toFixed(2) + toCurrency)}`;
+}
+promptCurrencyValue();
